@@ -7,15 +7,15 @@ mongoose.connect();
 
 app.use(express.json());
 
-app.use("/todos", todoRoutes);
-
-app.use((err, req, res, next) => {
-    res.status(500).json({Message: err.message});
-});
+app.use("/api/todos", todoRoutes);
 
 app.get('/', (req, res) => {
     res.send('express test')
 })
+
+app.use((err, req, res, next) => {
+    res.status(500).json({Message: err.message});
+});
 
 // app.listen(3000, () => {
 //    console.log('server is running on http://localhost:3000');
