@@ -50,7 +50,19 @@ describe(endointUrl, () => {
             .send(testData);
         expect(res.statusCode).toBe(404);
     });
-    
+
+    it("DELETE " + endointUrl, async () => {
+        const res = await request(app)
+            .delete(endointUrl + "/" + newTodoId);
+        expect(res.statusCode).toBe(200);
+    });
+
+    it("should return 404 on DELETE " + endointUrl, async () => {
+        const res = await request(app)
+            .delete(endointUrl + "/" + notExistingId);
+        expect(res.statusCode).toBe(404);
+    });
+
     test("GET " + endointUrl, async () => {
         const response = await request(app).get(endointUrl);
         expect(response.statusCode).toBe(200);
