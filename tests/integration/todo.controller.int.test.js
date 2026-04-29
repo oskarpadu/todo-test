@@ -6,6 +6,8 @@ const endointUrl = '/api/todos';
 
 const mongoose = require('mongoose');
 
+let firstTodo;
+
 describe(endointUrl, () => {
     it("POST " + endointUrl, async () => {
         const response = await request(app)
@@ -32,6 +34,19 @@ describe(endointUrl, () => {
         expect(Array.isArray(response.body)).toBeTruthy();
         expect(response.body[0].title).toBeDefined();
         expect(response.body[0].done).toBeDefined();
+        firstTodo = response.body[0];
+    });
+
+    test("GET " + endointUrl + "/:todoId", async () => {
+        const response = await request(app).get(endointUrl + "/" + firstTodo._id);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.title).toBe(firstTodo.title);
+        expect(response.body.done).toBe(firstTodo.done);
+    });
+
+    test("GET todoby id doesn't exist " + endointUrl + "/:todoId", async () => {
+        const response = await request(app).get(endointUrl + "/69e5fe7f27ab7bd0ccebf1bd");
+        expect(response.statusCode).toBe(404);
     });
 
     afterAll(async () => {
